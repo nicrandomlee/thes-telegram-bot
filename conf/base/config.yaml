@@ -1,0 +1,13 @@
+api_credentials:
+    filename: creds.json
+
+google_sheets:
+    seniors_update_doc_name: Befriending List Updates
+    befriending_seniors_update_sheet_name: befriending
+    frail_seniors_update_sheet_name: frail
+
+post_volunteering_update_message_scheduler:
+    day_of_week : tue
+    hour : 22
+    minute : 04
+
