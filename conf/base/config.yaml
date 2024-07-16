@@ -6,8 +6,37 @@ google_sheets:
     befriending_seniors_update_sheet_name: befriending
     frail_seniors_update_sheet_name: frail
 
+# Reminding volunteers to update seniors' status post volunteering session
 post_volunteering_update_message_scheduler:
-    day_of_week : tue
-    hour : 22
-    minute : 04
+    day_of_week : sat
+    hour : 12
+    minute : 00
 
+# Update at end of day on which seniors' status have not been updated
+post_volunteering_reminder_to_update_status_scheduler:
+    day_of_week : sat
+    hour : 20
+    minute : 00
+
+# Creates weekly poll for volunteers to vote if they are coming
+# Default: thu 01 00
+create_weekly_poll_message_scheduler:
+    day_of_week : thu
+    hour : 01
+    minute : 00
+
+# Stops the poll from above
+# Default: fri 20 00
+stop_weekly_poll_message_scheduler:
+    day_of_week : fri
+    hour : 20
+    minute : 00
+
+send_report_to_vm_group_scheduler:
+    day_of_week : sun
+    hour : 00
+    minute : 15
+
+generate_report_from_template_settings:
+    template_path: template.docx
+    report_folder: reports

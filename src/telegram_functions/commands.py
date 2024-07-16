@@ -4,6 +4,7 @@ from telegram.ext import ContextTypes
 from conf.base.creds import BOT_USERNAME
 from src.utils.gspread_utils import get_befriending_seniors_list, get_frail_seniors_list
 from src.utils.load_config import load_config
+from src.utils.utils import is_today_saturday
 
 config = load_config('conf/base/config.yaml')
 
@@ -13,7 +14,7 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
     
     await update.message.reply_text('Hello! Welcome to NUS CSC T.H.E.S Bot. For more\
-        information about our project, visit https://linktr.ee/T.H.E.Seniors.\n\nRun /update_befr_seniors_message to update befriending senior updates!')
+        information about our project, visit https://linktr.ee/T.H.E.Seniors.\n\nRun /update_befr_seniors_message to update befriending senior status and /update_frail_seniors_message to update frail senior status!')
 
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -31,6 +32,11 @@ async def update_befriending_seniors_message_command(update: Update, context: Co
         await update.message.reply_text("This command can only be used in private chats.")
         return
     
+    if not is_today_saturday():
+        response = "Window for updating of seniors' status this week is closed. Please kindly approach our VM heads Nicholas and Rachel for assistance."
+        await update.message.reply_text(response)
+        return
+
     befriending_seniors_list = get_befriending_seniors_list()
     if len(befriending_seniors_list) == 0:
         error_message = "Oops! There was an error retrieving seniors list!"
@@ -53,6 +59,11 @@ async def update_frail_seniors_message_command(update: Update, context: ContextT
 
     if update.message.chat.type == "group":
         await update.message.reply_text("This command can only be used in private chats.")
+        return
+    
+    if not is_today_saturday():
+        response = "Window for updating of seniors' status this week is closed. Please kindly approach our VM heads Nicholas and Rachel for assistance."
+        await update.message.reply_text(response)
         return
     
     frail_seniors_list = sorted(get_frail_seniors_list())

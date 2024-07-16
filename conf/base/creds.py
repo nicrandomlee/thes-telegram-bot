@@ -4,3 +4,4 @@ from typing import Final
 TOKEN: Final = ''
 BOT_USERNAME: Final = '@nuscscthesbot'
 chat_id = ""
+vm_chat_id = ""

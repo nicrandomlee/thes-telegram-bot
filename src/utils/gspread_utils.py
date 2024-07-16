@@ -68,5 +68,26 @@ def get_cell_contents(cell_coords, sheet_name=""):
     spreadsheet = file.worksheet(sheet_name)
     return spreadsheet.cell(row,col).value
 
+def get_list_of_befriending_seniors_status():
+    sheet_name = config['google_sheets']['befriending_seniors_update_sheet_name']
+    spreadsheet = file.worksheet(sheet_name)
+    values = spreadsheet.get_all_values()
+    return values
 
+def get_list_of_frail_seniors_status():
+    sheet_name = config['google_sheets']['frail_seniors_update_sheet_name']
+    spreadsheet = file.worksheet(sheet_name)
+    values = spreadsheet.get_all_values()
+    return values
+
+def get_list_of_befriending_seniors_not_updated():
+    values = get_list_of_befriending_seniors_status()[1:]
+    list_of_befriending_seniors_not_updated = [row[0] for row in values if len(row) > 1 and row[1].strip() == '']
+    return list_of_befriending_seniors_not_updated
+
+def get_list_of_frail_seniors_not_updated():
+    values = get_list_of_frail_seniors_status()[1:]
+    list_of_frail_seniors_not_updated = [row[0] for row in values if len(row) > 1 and row[1].strip() == '']
+
+    return list_of_frail_seniors_not_updated
 
