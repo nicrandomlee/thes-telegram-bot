@@ -6,6 +6,7 @@ def set_default_user_data(context):
     context.user_data['name_of_frail_senior_to_be_updated'] = None
     context.user_data['MODE_IS_UPDATE_BEFRIENDING_SENIORS'] = False
     context.user_data['MODE_IS_UPDATE_FRAIL_SENIORS'] = False
+    context.user_data['MODE_IS_SEND_ALLOCATIONS'] = False
 
 def reset_user_data(context):
     context.user_data.clear()

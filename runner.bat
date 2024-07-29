@@ -1,0 +1,1 @@
+cmd /k python "C:\Users\Administrator\Downloads\telebots\main.py"

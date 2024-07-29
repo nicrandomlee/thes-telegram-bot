@@ -7,22 +7,24 @@ google_sheets:
     frail_seniors_update_sheet_name: frail
 
 # Reminding volunteers to update seniors' status post volunteering session
+# Default: sat 12 00
 post_volunteering_update_message_scheduler:
     day_of_week : sat
     hour : 12
     minute : 00
 
 # Update at end of day on which seniors' status have not been updated
+# Default: sat 20 00
 post_volunteering_reminder_to_update_status_scheduler:
     day_of_week : sat
     hour : 20
     minute : 00
 
 # Creates weekly poll for volunteers to vote if they are coming
-# Default: thu 01 00
+# Default: tue 18 00
 create_weekly_poll_message_scheduler:
-    day_of_week : thu
-    hour : 01
+    day_of_week : tue
+    hour : 18
     minute : 00
 
 # Stops the poll from above
@@ -36,7 +38,14 @@ send_report_to_vm_group_scheduler:
     day_of_week : sun
     hour : 00
     minute : 15
+send_report_to_vm_group_scheduler_2:
+    day_of_week : sun
+    hour : 12
+    minute : 15
 
 generate_report_from_template_settings:
+    # Weekly Report Template Document Name (without Directory)
     template_path: template.docx
+    # Weekly Report Template File Directory (separate each sub folder with /)
     report_folder: reports
+

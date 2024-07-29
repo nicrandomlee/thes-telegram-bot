@@ -11,8 +11,9 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.answer()
     
     if query.data.startswith('weekly_poll_answer_'):
-        poll_message_id = context.bot_data.get('weekly_poll_message_id')
-        if poll_message_id and query.message.message_id == poll_message_id:
+        poll_message_ids = context.bot_data.get('weekly_poll_message_id', {})
+
+        if poll_message_ids and query.message.message_id in poll_message_ids.values():
             user = query.from_user
             user_name = user.first_name
             telehandle = user.username
@@ -52,7 +53,16 @@ Pls indicate yr availability by 6pm tmrw(Fri)! Thank you 🧑‍🤝‍🧑
             ]
             reply_markup = InlineKeyboardMarkup(keyboard)
             context.bot_data['weekly_poll_message'] = new_text
-            await query.edit_message_text(text=new_text, reply_markup=reply_markup)
+            for chat_id, message_id in poll_message_ids.items():
+                try:
+                    await context.bot.edit_message_text(
+                        chat_id=chat_id,
+                        message_id=message_id,
+                        text=new_text,
+                        reply_markup=reply_markup
+                    )
+                except Exception as e:
+                    print(f"Failed to update message in chat {chat_id}: {e}")
             
             return
 
@@ -98,7 +108,7 @@ Pls indicate yr availability by 6pm tmrw(Fri)! Thank you 🧑‍🤝‍🧑
             reply_markup = InlineKeyboardMarkup(keyboard)
             await query.message.reply_text(f"This cell has already been updated with the following updates:\n{cell_contents}\n\nOverride values?", reply_markup=reply_markup)
         else:
-            response = f"You selected {befriending_senior_name}. Please enter the updates below:"
+            response = f"You selected {befriending_senior_name}. Please enter the updates below. \nExample of update: Mr Wong was always happy to see us and today was no exception. During the session, he shared with us about his childhood stories and experiences in Malaysia. We also found out that one of the light in his apartment was not working and he was having trouble finding a replacement."
             await query.message.reply_text(response)
             context.user_data['MODE_IS_UPDATE_BEFRIENDING_SENIORS'] = True
 

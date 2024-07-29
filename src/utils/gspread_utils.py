@@ -1,6 +1,6 @@
 import gspread
 from src.utils.load_config import load_config
-from src.utils.utils import get_todays_date
+from src.utils.utils import get_most_recent_saturday, extract_frail_senior_name_from_frail_list
 
 config = load_config('conf/base/config.yaml')
 api_creds_filename = config['api_credentials']['filename']
@@ -43,12 +43,12 @@ def find_cell_to_update(senior:str, sheet_name=""):
         raise Exception("Sheet Name Empty!")
 
     spreadsheet = file.worksheet(sheet_name)
-    today = get_todays_date()
-    if today not in get_columns(sheet_name=sheet_name):
-        spreadsheet.insert_cols(values=[[today]], col=2)
-        target_col = 2
+    most_recent_saturday = get_most_recent_saturday()
+    if most_recent_saturday not in get_columns(sheet_name=sheet_name):
+        spreadsheet.insert_cols(values=[[most_recent_saturday]], col=3)
+        target_col = 3
     else:
-        target_col = spreadsheet.find(today, in_row=1).col
+        target_col = spreadsheet.find(most_recent_saturday, in_row=1).col
     target_row = spreadsheet.find(senior, in_column=1).row
     return (target_row, target_col)
 
@@ -82,12 +82,12 @@ def get_list_of_frail_seniors_status():
 
 def get_list_of_befriending_seniors_not_updated():
     values = get_list_of_befriending_seniors_status()[1:]
-    list_of_befriending_seniors_not_updated = [row[0] for row in values if len(row) > 1 and row[1].strip() == '']
+    list_of_befriending_seniors_not_updated = [row[0] for row in values if len(row) > 1 and row[2].strip() == '']
     return list_of_befriending_seniors_not_updated
 
 def get_list_of_frail_seniors_not_updated():
     values = get_list_of_frail_seniors_status()[1:]
-    list_of_frail_seniors_not_updated = [row[0] for row in values if len(row) > 1 and row[1].strip() == '']
-
+    list_of_frail_seniors_not_updated = [row[0] for row in values if len(row) > 1 and row[2].strip() == '']
+    list_of_frail_seniors_not_updated = list(map(extract_frail_senior_name_from_frail_list, list_of_frail_seniors_not_updated))
     return list_of_frail_seniors_not_updated
 
